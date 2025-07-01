@@ -172,6 +172,13 @@ class FlightPlannerApp:
         
         ttk.Button(
             button_frame, 
+            text="Ver Grafo", 
+            style="primary.TButton",
+            command=self.mostrar_grafo
+        ).pack(side=tk.LEFT, padx=5)
+        
+        ttk.Button(
+            button_frame, 
             text="Limpiar", 
             style="warning.TButton",
             command=self.limpiar
@@ -316,6 +323,76 @@ class FlightPlannerApp:
         tree.pack(fill=tk.BOTH, expand=True)
         
         # Botón de cierre
+        ttk.Button(
+            popup, 
+            text="Cerrar", 
+            command=popup.destroy,
+            style="danger.TButton"
+        ).pack(pady=10)
+    
+    def mostrar_grafo(self):
+        import networkx as nx
+        import matplotlib.pyplot as plt
+        from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+        
+        # Crear grafo no dirigido y evitar duplicados de aristas
+        G = nx.Graph()
+        added_edges = set()
+        for origen in self.grafo:
+            for destino, costo in self.grafo[origen]:
+                edge = tuple(sorted((origen, destino)))
+                if edge not in added_edges:
+                    G.add_edge(origen, destino, weight=costo)
+                    added_edges.add(edge)
+        
+        # Crear ventana emergente
+        popup = tk.Toplevel(self.root)
+        popup.title("Grafo de Aeropuertos")
+        popup.geometry("800x700")
+        popup.transient(self.root)
+        popup.grab_set()
+        
+        # Dibujar grafo
+        fig, ax = plt.subplots(figsize=(10, 8))
+        # Usar spring_layout con mayor espaciado para separar aristas adyacentes
+        pos = nx.spring_layout(G, seed=42, k=2.5, iterations=300)
+        # Ajustar escala para expandir posiciones y mejorar separación visual
+        pos = {n: coords * 2.2 for n, coords in pos.items()}
+        
+        # Permitir ajuste manual de la posición de BON si existe
+        if 'BON' in pos:
+            pos['BON'] = pos['BON'] + [-2.5, 0]  # Mover BON hacia la izquierda
+        
+        nx.draw_networkx_nodes(G, pos, ax=ax, node_color="#6fa8dc", node_size=600)
+        nx.draw_networkx_labels(G, pos, ax=ax, font_size=9, font_color="#1c4587", font_weight="bold")
+        
+        # Dibujar aristas más delgadas y negras para mayor claridad
+        nx.draw_networkx_edges(
+            G, pos, ax=ax,
+            edgelist=list(G.edges()),
+            width=1,
+            edge_color='black',
+            alpha=0.7,
+            connectionstyle='arc3, rad=0.2'
+        )
+        
+        edge_labels = nx.get_edge_attributes(G, 'weight')
+        # Colocar etiquetas con fondo blanco y sin rotar, separadas de las líneas
+        nx.draw_networkx_edge_labels(
+            G, pos, edge_labels=edge_labels, ax=ax,
+            font_color="#e06666", font_size=8,
+            label_pos=0.5, rotate=False,
+            bbox=dict(facecolor='white', edgecolor='none', pad=0.5)
+        )
+        
+        ax.set_axis_off()
+        fig.tight_layout()
+        
+        # Mostrar en Tkinter
+        canvas = FigureCanvasTkAgg(fig, master=popup)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        
         ttk.Button(
             popup, 
             text="Cerrar", 
