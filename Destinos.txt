@@ -1,0 +1,12 @@
+CCS;No
+AUA;Sí
+BON;Sí
+CUR;Sí
+SXM;Sí
+SDQ;Sí
+SBH;No
+POS;No
+BGI;No
+FDF;No
+PTP;No
+PAP;No
