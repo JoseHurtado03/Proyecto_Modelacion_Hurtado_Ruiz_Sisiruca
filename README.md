@@ -68,8 +68,4 @@ LIM;BOG;200
 
 ## Créditos
 
-Desarrollado por Hurtado, Ruiz y Sisituca.
-
----
-
-Puedes copiar y adaptar este formato para tu README.
+Desarrollado por Hurtado, Ruiz y Sisiruca.
