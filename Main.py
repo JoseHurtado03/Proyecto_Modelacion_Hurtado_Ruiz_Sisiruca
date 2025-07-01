@@ -363,7 +363,14 @@ class FlightPlannerApp:
         if 'BON' in pos:
             pos['BON'] = pos['BON'] + [-2.5, 0]  # Mover BON hacia la izquierda
         
-        nx.draw_networkx_nodes(G, pos, ax=ax, node_color="#6fa8dc", node_size=600)
+        # Colorear nodos según si requieren visa
+        node_colors = []
+        for n in G.nodes():
+            if self.visas.get(n, False):
+                node_colors.append("#e06666")  # Rojo para nodos que requieren visa
+            else:
+                node_colors.append("#6fa8dc")  # Azul para nodos sin visa
+        nx.draw_networkx_nodes(G, pos, ax=ax, node_color=node_colors, node_size=600)
         nx.draw_networkx_labels(G, pos, ax=ax, font_size=9, font_color="#1c4587", font_weight="bold")
         
         # Dibujar aristas más delgadas y negras para mayor claridad
