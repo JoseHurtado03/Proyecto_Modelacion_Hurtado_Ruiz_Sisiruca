@@ -1,9 +1,9 @@
 CCS;No
-AUA;Sí
-BON;Sí
-CUR;Sí
-SXM;Sí
-SDQ;Sí
+AUA;Si
+BON;Si
+CUR;Si
+SXM;Si
+SDQ;Si
 SBH;No
 POS;No
 BGI;No

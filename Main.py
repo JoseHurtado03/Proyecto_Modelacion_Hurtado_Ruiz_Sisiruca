@@ -14,7 +14,7 @@ def cargar_destinos(path):
                 parts = line.strip().split(";")
                 if len(parts) >= 2:
                     codigo, requiere_visa = parts[0], parts[1]
-                    visas[codigo] = requiere_visa.lower() == "sí"
+                    visas[codigo] = requiere_visa.lower() == "si"
         return visas
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo cargar destinos:\n{str(e)}")
@@ -93,8 +93,8 @@ class FlightPlannerApp:
         self.root.resizable(True, True)
         
         # Cargar datos
-        self.visas = cargar_destinos("destinos.txt")
-        self.grafo = cargar_tarifas("tarifas.txt")
+        self.visas = cargar_destinos("Destinos.txt")
+        self.grafo = cargar_tarifas("Tarifas.txt")
         
         # Configurar tema moderno
         self.style = ttkbs.Style(theme="morph")
