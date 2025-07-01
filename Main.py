@@ -248,7 +248,7 @@ class FlightPlannerApp:
                 self.resultado_text.insert(tk.END, "="*30 + "\n")
                 self.resultado_text.insert(tk.END, f"✈️ Ruta: {' → '.join(ruta)}\n\n")
                 self.resultado_text.insert(tk.END, f"💵 Costo total: ${costo:.2f}\n")
-                self.resultado_text.insert(tk.END, f"📌 Escalas: {len(ruta)-2 if len(ruta)>2 else 0}")
+                self.resultado_text.insert(tk.END, f"📌 Escalas: {max(0, len(ruta)-2)}")
                 
             elif criterio == "escalas":
                 escalas, ruta = bfs(grafo_filtrado, origen, destino)
@@ -258,7 +258,7 @@ class FlightPlannerApp:
                 self.resultado_text.insert(tk.END, "RUTA CON MENOS ESCALAS\n")
                 self.resultado_text.insert(tk.END, "="*30 + "\n")
                 self.resultado_text.insert(tk.END, f"✈️ Ruta: {' → '.join(ruta)}\n\n")
-                self.resultado_text.insert(tk.END, f"📌 Escalas totales: {escalas}\n")
+                self.resultado_text.insert(tk.END, f"📌 Escalas totales: {max(0, len(ruta)-2)}\n")
                 
                 # Calcular costo para esta ruta
                 costo_total = 0
